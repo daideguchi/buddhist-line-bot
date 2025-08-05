@@ -176,30 +176,16 @@ def broadcast():
 今日も心穏やかに過ごしましょう。
                 """
                 
-                try:
-                    if GEMINI_API_KEY:
-                        wisdom_response = model.generate_content(wisdom_prompt)
-                        message_text = wisdom_response.text
-                        logger.info("Using AI-generated Buddhist message")
-                    else:
-                        message_text = """
+                # APIエラー対策：デフォルトメッセージを優先使用
+                message_text = """
 おはようございます。
 
 今日という日は、二度と戻らない大切な一日です。
 小さなことに感謝の気持ちを持つだけで、心が軽くなります。
 
 今日も心穏やかに過ごしましょう。
-                        """.strip()
-                except Exception as e:
-                    logger.error(f"AI generation error: {e}")
-                    message_text = """
-おはようございます。
-
-今日という日は、二度と戻らない大切な一日です。
-深呼吸をして、心を落ち着けてから一日を始めましょう。
-
-今日も心穏やかに過ごしましょう。
-                    """.strip()
+                """.strip()
+                logger.info("Using default simple message to avoid API rate limits")
         else:
             message_text = data.get('message')
         
