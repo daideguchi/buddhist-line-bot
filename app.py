@@ -107,7 +107,38 @@ def get_message_from_sheets():
 @app.route("/", methods=['GET'])
 def health_check():
     """ヘルスチェック用エンドポイント"""
-    return "Buddhist Wisdom Bot is running!", 200
+    return "Buddhist Wisdom Bot is running! [SIMPLIFIED VERSION]", 200
+
+@app.route("/test-simple-wisdom", methods=['GET'])
+def test_simple_wisdom():
+    """簡易版メッセージ生成テスト"""
+    try:
+        jst = timezone(timedelta(hours=9))
+        today = datetime.now(jst)
+        today_str = today.strftime("%Y年%m月%d日")
+        
+        simple_prompt = f"""
+{today_str}の心を軽くする3行のメッセージを作成してください。
+
+要件：
+- 簡潔で実用的
+- 宗教的表現なし
+- 自然な日本語
+
+形式：
+おはようございます。
+[実用的なアドバイス1行]
+今日も心穏やかに過ごしましょう。
+        """
+        
+        if GEMINI_API_KEY:
+            wisdom_response = model.generate_content(simple_prompt)
+            return f"[AI生成テスト]\n{wisdom_response.text}", 200
+        else:
+            return "おはようございます。\n深呼吸をして、今この瞬間を大切にしましょう。\n今日も心穏やかに過ごしましょう。", 200
+            
+    except Exception as e:
+        return f"エラー: {str(e)}", 500
 
 @app.route("/broadcast", methods=['POST'])
 def broadcast():
