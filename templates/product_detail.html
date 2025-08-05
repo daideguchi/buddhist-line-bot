@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} | 人生の道標 - 癒される仏教{% endblock %}
+
+{% block content %}
+<div class="teaching-title">
+    <h2>{{ product.name }}</h2>
+    <div class="pronunciation">{{ product.description }}</div>
+</div>
+
+<div class="content">
+    <div style="display: grid; grid-template-columns: 1fr 300px; gap: 40px; margin-bottom: 30px;">
+        <div class="product-main">
+            <div class="product-image-large">
+                <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #f4e4bc, #e8d5a3); 
+                           display: flex; align-items: center; justify-content: center; border-radius: 10px; margin-bottom: 30px;">
+                    <span style="font-size: 120px;">📖</span>
+                </div>
+            </div>
+            
+            <h3>📖 商品詳細</h3>
+            <div style="background: #f9f9f9; padding: 25px; border-radius: 10px; border-left: 4px solid #d4af37;">
+                <pre style="white-space: pre-wrap; font-family: inherit; margin: 0; line-height: 1.8;">{{ product.long_description }}</pre>
+            </div>
+            
+            <h3 style="margin-top: 40px;">✨ 特徴・内容</h3>
+            <ul style="list-style: none; padding: 0;">
+                {% for feature in product.features %}
+                <li style="background: white; margin: 10px 0; padding: 15px; border-radius: 8px; 
+                          box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-left: 4px solid #4a7c59;">
+                    ✅ {{ feature }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="product-sidebar">
+            <div class="purchase-box">
+                <div class="price-box">
+                    <div style="text-align: center; font-size: 2.5em; font-weight: bold; color: #d32f2f; margin-bottom: 10px;">
+                        {{ product.price }}
+                    </div>
+                    <div style="text-align: center; color: #666; margin-bottom: 20px;">税込価格</div>
+                </div>
+                
+                <div class="discount-notice" style="background: #ffeb3b; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
+                    <strong>🎁 メルマガ登録者限定</strong><br>
+                    <span style="color: #d32f2f; font-size: 1.2em; font-weight: bold;">20%割引価格</span><br>
+                    <span style="text-decoration: line-through; color: #999;">{{ product.price }}</span> 
+                    → <span style="color: #d32f2f; font-weight: bold;">784円</span>
+                </div>
+                
+                <button onclick="alert('現在準備中です。近日公開予定！')" 
+                        style="width: 100%; padding: 20px; background: linear-gradient(135deg, #d4af37, #f4e4bc); 
+                               border: none; border-radius: 25px; font-size: 18px; font-weight: bold; 
+                               color: #8b4513; cursor: pointer; transition: transform 0.2s; margin-bottom: 15px;">
+                    🛒 今すぐ購入する
+                </button>
+                
+                <a href="/newsletter" style="display: block; width: 100%; padding: 15px; background: #4a7c59; 
+                                              color: white; text-decoration: none; border-radius: 25px; 
+                                              font-weight: bold; text-align: center; margin-bottom: 20px;">
+                    📧 20%割引を受け取る
+                </a>
+                
+                <div class="guarantee-box" style="background: #e3f2fd; padding: 15px; border-radius: 8px; text-align: center;">
+                    <strong>🛡️ 安心保証</strong><br>
+                    30日間返金保証<br>
+                    <small>内容にご満足いただけない場合は全額返金いたします</small>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px; background: #f0f8f0; padding: 20px; border-radius: 10px;">
+                <h4 style="color: #4a7c59; margin: 0 0 15px 0;">💬 こんな方におすすめ</h4>
+                <ul style="margin: 0; padding-left: 20px; color: #666;">
+                    <li>仏教に興味があるが何から始めればいいかわからない</li>
+                    <li>心の平安を得たいと思っている</li>
+                    <li>日常生活で実践できる智慧を学びたい</li>
+                    <li>ストレスや悩みを軽減したい</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="related-content" style="margin-top: 50px;">
+        <h3>🔗 関連コンテンツ</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            <a href="/blog" style="display: block; background: white; padding: 20px; border-radius: 10px; 
+                                  text-decoration: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+                                  border-left: 4px solid #d4af37;">
+                <h5 style="color: #8b4513; margin: 0 0 10px 0;">📚 25の仏教の教え</h5>
+                <p style="color: #666; margin: 0;">無料でお読みいただける仏教の智慧集</p>
+            </a>
+            
+            <a href="/testimonials" style="display: block; background: white; padding: 20px; border-radius: 10px; 
+                                          text-decoration: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+                                          border-left: 4px solid #4a7c59;">
+                <h5 style="color: #8b4513; margin: 0 0 10px 0;">💬 お客様の声</h5>
+                <p style="color: #666; margin: 0;">実際にご購入いただいた方の体験談</p>
+            </a>
+            
+            <a href="/youtube" style="display: block; background: white; padding: 20px; border-radius: 10px; 
+                                     text-decoration: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+                                     border-left: 4px solid #d32f2f;">
+                <h5 style="color: #8b4513; margin: 0 0 10px 0;">🎥 YouTube動画</h5>
+                <p style="color: #666; margin: 0;">間違い探しで脳トレしながら学ぶ</p>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+@media (max-width: 768px) {
+    .content > div:first-child {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+}
+
+.purchase-box {
+    position: sticky;
+    top: 20px;
+}
+
+.price-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+</style>
+{% endblock %}

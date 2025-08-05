@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block title %}アンケート | 人生の道標 - 癒される仏教{% endblock %}
+
+{% block content %}
+<div class="teaching-title">
+    <h2>📝 サービス向上アンケート</h2>
+    <div class="pronunciation">あなたのご意見をお聞かせください</div>
+</div>
+
+<div class="content">
+    <p>より良いサービスをお届けするため、簡単なアンケートにご協力ください。</p>
+    <p><strong>所要時間：約2分</strong></p>
+    
+    <div class="practice-box">
+        <form id="surveyForm" style="max-width: 600px;">
+            <div class="form-group">
+                <label for="age">年齢層をお教えください</label>
+                <select id="age" name="age" required>
+                    <option value="">選択してください</option>
+                    <option value="20代">20代</option>
+                    <option value="30代">30代</option>
+                    <option value="40代">40代</option>
+                    <option value="50代">50代</option>
+                    <option value="60代">60代</option>
+                    <option value="70代以上">70代以上</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="interest">仏教のどのような点に最も興味がありますか？</label>
+                <select id="interest" name="interest" required>
+                    <option value="">選択してください</option>
+                    <option value="心の平安">心の平安・癒し</option>
+                    <option value="人生哲学">人生哲学・生き方</option>
+                    <option value="瞑想">瞑想・マインドフルネス</option>
+                    <option value="日常実践">日常での実践方法</option>
+                    <option value="歴史文化">歴史・文化</option>
+                    <option value="その他">その他</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="learning_method">どの学習方法が最も役立っていますか？</label>
+                <select id="learning_method" name="learning_method" required>
+                    <option value="">選択してください</option>
+                    <option value="LINE配信">LINE配信メッセージ</option>
+                    <option value="ブログ記事">ブログ記事（詳細解説）</option>
+                    <option value="YouTube">YouTube動画</option>
+                    <option value="電子書籍">電子書籍・教材</option>
+                    <option value="音声コンテンツ">音声コンテンツ</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="feedback">サービスについてのご感想・改善点などをお聞かせください</label>
+                <textarea id="feedback" name="feedback" rows="5" 
+                         placeholder="例：もっと実践的な内容が欲しい、配信頻度について、新しい機能の要望など"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">メールアドレス（任意）</label>
+                <input type="email" id="email" name="email" 
+                       placeholder="フォローアップのご連絡を差し上げる場合があります">
+                <small>※メールアドレスは任意です。お答えいただいた場合も、営業メール等は送信いたしません。</small>
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                📤 アンケートを送信
+            </button>
+        </form>
+        
+        <div id="message" style="margin-top: 20px; text-align: center; font-weight: bold;"></div>
+    </div>
+
+    <div style="margin-top: 40px; background: #f0f8f0; padding: 25px; border-radius: 10px; border-left: 4px solid #4a7c59;">
+        <h4 style="color: #4a7c59; margin: 0 0 15px 0;">🎁 アンケート回答特典</h4>
+        <p style="margin: 0 0 15px 0;">アンケートにお答えいただいた方に、<strong>「心を軽やかにする7つの習慣」PDF</strong>を無料プレゼント！</p>
+        <ul style="margin: 0; padding-left: 20px;">
+            <li>仏教的な観点から見た幸せな生活習慣</li>
+            <li>ストレス軽減のための実践的テクニック</li>
+            <li>毎日続けられる簡単な心の整え方</li>
+        </ul>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+        <p style="color: #666; font-size: 0.9em;">
+            ご協力いただき、ありがとうございます。<br>
+            いただいたご意見は、サービス向上のために大切に活用させていただきます。
+        </p>
+    </div>
+</div>
+
+<style>
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #8b4513;
+}
+
+.form-group select,
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #d4af37;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+    background: white;
+}
+
+.form-group select:focus,
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4a7c59;
+    box-shadow: 0 0 0 2px rgba(74, 124, 89, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.85em;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #4a7c59, #5a8c69);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.submit-btn:hover {
+    background: linear-gradient(135deg, #3a6147, #4a7c59);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 124, 89, 0.3);
+}
+
+.submit-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+@media (max-width: 768px) {
+    .form-group select,
+    .form-group input,
+    .form-group textarea {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+}
+</style>
+
+<script>
+document.getElementById('surveyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const button = this.querySelector('button[type="submit"]');
+    const message = document.getElementById('message');
+    
+    // 必須項目チェック
+    const requiredFields = ['age', 'interest', 'learning_method'];
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        const value = formData.get(field);
+        if (!value) {
+            isValid = false;
+        }
+    });
+    
+    if (!isValid) {
+        message.innerHTML = `<div style="color: #d32f2f; background: #ffebee; padding: 15px; border-radius: 5px;">必須項目をすべて入力してください。</div>`;
+        return;
+    }
+    
+    button.textContent = '送信中...';
+    button.disabled = true;
+    
+    fetch('/survey', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            message.innerHTML = `<div style="color: #4a7c59; background: #f0f8f0; padding: 20px; border-radius: 5px;">
+                ${data.message}<br><br>
+                <strong>🎁 特典PDFについて</strong><br>
+                近日中にメルマガ経由でお届け予定です。<br>
+                メルマガ未登録の方は、ぜひご登録ください！<br>
+                <a href="/newsletter" style="color: #4a7c59; text-decoration: underline;">メルマガ登録はこちら</a>
+            </div>`;
+            this.reset();
+        } else {
+            message.innerHTML = `<div style="color: #d32f2f; background: #ffebee; padding: 15px; border-radius: 5px;">${data.message}</div>`;
+        }
+    })
+    .catch(error => {
+        message.innerHTML = `<div style="color: #d32f2f; background: #ffebee; padding: 15px; border-radius: 5px;">エラーが発生しました。もう一度お試しください。</div>`;
+    })
+    .finally(() => {
+        button.textContent = '📤 アンケートを送信';
+        button.disabled = false;
+    });
+});
+</script>
+{% endblock %}

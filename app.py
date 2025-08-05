@@ -2,9 +2,10 @@ import os
 import json
 import logging
 import requests
+import csv
 from datetime import datetime, timezone, timedelta
 import google.generativeai as genai
-from flask import Flask, request, abort, render_template, redirect, url_for
+from flask import Flask, request, abort, render_template, redirect, url_for, flash, jsonify
 from linebot.v3.messaging import (
     Configuration, ApiClient, MessagingApi, 
     PushMessageRequest, BroadcastRequest, TextMessage
@@ -431,8 +432,44 @@ def broadcast():
                 day_of_year = today.timetuple().tm_yday
                 teaching_index = (day_of_year - 1) % len(teachings_with_url)
                 
-                message_text = teachings_with_url[teaching_index].strip()
-                logger.info(f"Using Buddhist teaching #{teaching_index + 1} for day {day_of_year}")
+                # 商品紹介メッセージを時々追加（7回に1回程度）
+                if day_of_year % 7 == 0:
+                    product_messages = [
+                        """おはようございます。
+
+仏教の「知足」という教えがあります。今あるものに満足し感謝する心です。
+足りないものより、今あるものに目を向けてみましょう。
+
+今日も心穏やかに過ごしましょう。
+
+📖 詳しく読む：https://buddhist-line-bot-production.up.railway.app/blog/chisoku
+
+💡 さらに深く学びたい方へ
+「心が軽くなる25の仏教の智慧」電子書籍が好評発売中です。
+日常で実践できる仏教の教えを詳しく解説しています。
+詳細：https://buddhist-line-bot-production.up.railway.app/products""",
+                    
+                        """おはようございます。
+
+「一期一会」- 今日の出会いは一生に一度きりかもしれません。
+目の前の人との時間を大切に、心を込めて接しましょう。
+
+今日も心穏やかに過ごしましょう。
+
+📖 詳しく読む：https://buddhist-line-bot-production.up.railway.app/blog/ichigo_ichie
+
+🎧 瞑想で心を整えませんか？
+「心を整える瞑想ガイド音声」で毎日5分の心の時間を。
+初心者でも簡単に始められる瞑想法を音声で丁寧に解説。
+詳細：https://buddhist-line-bot-production.up.railway.app/products"""
+                    ]
+                    
+                    product_index = (day_of_year // 7) % len(product_messages)
+                    message_text = product_messages[product_index].strip()
+                    logger.info(f"Using product promotion message #{product_index + 1} for day {day_of_year}")
+                else:
+                    message_text = teachings_with_url[teaching_index].strip()
+                    logger.info(f"Using Buddhist teaching #{teaching_index + 1} for day {day_of_year}")
         else:
             message_text = data.get('message')
         
@@ -988,6 +1025,236 @@ def blog_index():
         })
     
     return render_template('blog_index.html', teachings=teachings_list)
+
+# メルマガ登録機能
+@app.route('/newsletter', methods=['GET', 'POST'])
+def newsletter():
+    """メルマガ登録ページ"""
+    if request.method == 'POST':
+        email = request.form.get('email')
+        name = request.form.get('name', '')
+        
+        if not email:
+            return jsonify({'success': False, 'message': 'メールアドレスを入力してください'})
+        
+        # CSVファイルに保存
+        try:
+            with open('newsletter_subscribers.csv', 'a', newline='', encoding='utf-8') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow([datetime.now().strftime('%Y-%m-%d %H:%M:%S'), name, email])
+            
+            return jsonify({'success': True, 'message': 'ありがとうございます！メルマガ登録が完了しました。'})
+        except Exception as e:
+            logger.error(f"Newsletter registration error: {e}")
+            return jsonify({'success': False, 'message': '登録に失敗しました。もう一度お試しください。'})
+    
+    return render_template('newsletter.html')
+
+# 商品販売ページ
+@app.route('/products')
+def products():
+    """商品一覧ページ"""
+    products_list = [
+        {
+            'id': 'ebook1',
+            'name': '心が軽くなる25の仏教の智慧',
+            'description': '日常で実践できる仏教の教えを分かりやすく解説。心の平安を得るための実践的なガイドブック。',
+            'price': '980円',
+            'type': '電子書籍（PDF）',
+            'image': '/static/images/ebook1.jpg'
+        },
+        {
+            'id': 'audio1',
+            'name': '心を整える瞑想ガイド音声',
+            'description': '初心者でも簡単にできる瞑想法を音声で丁寧に解説。毎日5分で心が変わる実践法。',
+            'price': '1,980円',
+            'type': '音声コンテンツ（MP3）',
+            'image': '/static/images/audio1.jpg'
+        },
+        {
+            'id': 'course1',
+            'name': '人生後半の生き方講座',
+            'description': '50代からの人生をより豊かに生きるための仏教的アプローチ。オンライン動画講座。',
+            'price': '19,800円',
+            'type': 'オンライン講座',
+            'image': '/static/images/course1.jpg'
+        }
+    ]
+    return render_template('products.html', products=products_list)
+
+# 商品詳細ページ
+@app.route('/products/<product_id>')
+def product_detail(product_id):
+    """商品詳細ページ"""
+    products = {
+        'ebook1': {
+            'name': '心が軽くなる25の仏教の智慧',
+            'price': '980円',
+            'description': '日常で実践できる仏教の教えを分かりやすく解説',
+            'long_description': '''
+            この電子書籍では、当サイトで紹介している25の仏教の教えをより深く、実践的に解説しています。
+            
+            【内容】
+            ・各教えの歴史的背景と意味
+            ・現代生活での具体的な実践方法
+            ・心の平安を得るための日々の習慣
+            ・実際の体験談と事例
+            
+            【特典】
+            ・音声読み上げファイル付き
+            ・実践チェックリスト
+            ・30日間のメール講座
+            ''',
+            'features': [
+                'PDF形式 120ページ',
+                '音声読み上げMP3付き',
+                '実践チェックリスト',
+                '30日間メール講座'
+            ]
+        }
+    }
+    
+    product = products.get(product_id)
+    if not product:
+        abort(404)
+    
+    return render_template('product_detail.html', product=product, product_id=product_id)
+
+# YouTube紹介ページ
+@app.route('/youtube')
+def youtube():
+    """YouTubeチャンネル紹介ページ"""
+    videos = [
+        {
+            'title': '間違い探し - 春の風景編',
+            'video_id': 'dQw4w9WgXcQ',  # 実際のYouTube動画IDに変更してください
+            'description': '美しい春の風景の中に隠された間違いを見つけて、脳を活性化しましょう。'
+        },
+        {
+            'title': '間違い探し - 昭和の思い出編',
+            'video_id': 'dQw4w9WgXcQ',  # 実際のYouTube動画IDに変更してください
+            'description': '懐かしい昭和の風景で間違い探し。記憶力向上にも効果的です。'
+        }
+    ]
+    return render_template('youtube.html', videos=videos)
+
+# お客様の声ページ
+@app.route('/testimonials')
+def testimonials():
+    """お客様の声・体験談ページ"""
+    testimonials_list = [
+        {
+            'name': '田中さん（65歳・女性）',
+            'content': '仏教の教えが日常生活にこんなに役立つとは思いませんでした。特に「中道」の考え方で、頑張りすぎる性格が少し楽になりました。',
+            'product': '心が軽くなる25の仏教の智慧'
+        },
+        {
+            'name': '佐藤さん（58歳・男性）',
+            'content': '瞑想は難しいと思っていましたが、音声ガイドがあることで毎日続けられています。朝の5分間が心を整える大切な時間になっています。',
+            'product': '心を整える瞑想ガイド音声'
+        },
+        {
+            'name': '山田さん（72歳・女性）',
+            'content': 'LINEで毎日届く仏教の智慧が楽しみです。短い文章なので読みやすく、詳しく知りたい時はブログで学べるのが良いですね。',
+            'product': 'LINEメルマガ'
+        }
+    ]
+    return render_template('testimonials.html', testimonials=testimonials_list)
+
+# アンケート機能
+@app.route('/survey', methods=['GET', 'POST'])
+def survey():
+    """簡単なアンケートページ"""
+    if request.method == 'POST':
+        survey_data = {
+            'age': request.form.get('age'),
+            'interest': request.form.get('interest'),
+            'learning_method': request.form.get('learning_method'),
+            'feedback': request.form.get('feedback'),
+            'email': request.form.get('email', ''),
+            'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        }
+        
+        # CSVファイルに保存
+        try:
+            with open('survey_responses.csv', 'a', newline='', encoding='utf-8') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow([
+                    survey_data['timestamp'],
+                    survey_data['age'],
+                    survey_data['interest'],
+                    survey_data['learning_method'],
+                    survey_data['feedback'],
+                    survey_data['email']
+                ])
+            
+            return jsonify({'success': True, 'message': 'アンケートにご協力いただき、ありがとうございました！'})
+        except Exception as e:
+            logger.error(f"Survey submission error: {e}")
+            return jsonify({'success': False, 'message': '送信に失敗しました。もう一度お試しください。'})
+    
+    return render_template('survey.html')
+
+# LINE Webhookハンドラ（簡易版アンケート対応）
+@app.route("/webhook", methods=['POST'])
+def webhook():
+    """LINE Webhookエンドポイント"""
+    try:
+        # 署名検証は省略（本番環境では必須）
+        body = request.get_data(as_text=True)
+        json_data = json.loads(body)
+        
+        events = json_data.get('events', [])
+        
+        for event in events:
+            if event['type'] == 'message' and event['message']['type'] == 'text':
+                user_message = event['message']['text'].strip()
+                reply_token = event['replyToken']
+                
+                # 簡易アンケート対応
+                if '満足度' in user_message or 'アンケート' in user_message:
+                    reply_message = """📝 アンケートにご協力ください
+
+以下のリンクから簡単なアンケートにお答えいただけると嬉しいです。
+今後のサービス向上に活用させていただきます。
+
+🔗 アンケートページ：
+https://buddhist-line-bot-production.up.railway.app/survey
+
+ご協力ありがとうございます🙏"""
+                    
+                elif '商品' in user_message or '教材' in user_message:
+                    reply_message = """📚 仏教学習教材のご案内
+
+心を軽やかにする学習教材をご用意しています：
+
+📖 電子書籍「心が軽くなる25の仏教の智慧」
+🎧 音声「心を整える瞑想ガイド」
+🎥 オンライン講座「人生後半の生き方講座」
+
+詳細はこちら：
+https://buddhist-line-bot-production.up.railway.app/products
+
+メルマガ登録で20%割引！"""
+                    
+                else:
+                    reply_message = """ありがとうございます🙏
+
+仏教の智慧について詳しく学びたい方は：
+📚 25の教え：https://buddhist-line-bot-production.up.railway.app/blog
+🛍️ 学習教材：https://buddhist-line-bot-production.up.railway.app/products
+🎥 YouTube：https://buddhist-line-bot-production.up.railway.app/youtube
+
+何かご質問がありましたら、お気軽にお声かけください。"""
+                
+                # 返信送信（実際のLINE API実装は省略）
+                logger.info(f"Reply to user: {reply_message}")
+        
+        return 'OK', 200
+        
+    except Exception as e:
+        logger.error(f"Webhook error: {e}")
+        return 'Error', 500
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))

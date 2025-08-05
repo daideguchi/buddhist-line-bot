@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}YouTube動画 | 人生の道標 - 癒される仏教{% endblock %}
+
+{% block content %}
+<div class="teaching-title">
+    <h2>🎥 YouTubeチャンネル</h2>
+    <div class="pronunciation">間違い探しで脳トレ & 仏教の智慧</div>
+</div>
+
+<div class="content">
+    <div style="text-align: center; margin-bottom: 40px;">
+        <a href="https://youtube.com/channel/UC2GQeK5dLzWIBudcFMdn5Og" target="_blank" 
+           style="display: inline-block; padding: 15px 30px; background: #d32f2f; color: white; 
+                  text-decoration: none; border-radius: 25px; font-size: 18px; font-weight: bold;">
+            📺 チャンネル登録はこちら
+        </a>
+    </div>
+
+    <h3>🧩 人気の間違い探し動画</h3>
+    <p>楽しみながら脳を活性化し、集中力を高めることができる間違い探し動画をお届けしています。</p>
+    
+    <div class="videos-grid">
+        {% for video in videos %}
+        <div class="video-card">
+            <div class="video-embed">
+                <iframe width="100%" height="200" 
+                        src="https://www.youtube.com/embed/{{ video.video_id }}" 
+                        title="{{ video.title }}"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-info">
+                <h4>{{ video.title }}</h4>
+                <p>{{ video.description }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="practice-box" style="margin: 40px 0;">
+        <h4>🎯 間違い探しの効果</h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+            <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #4a7c59;">
+                <h5 style="color: #4a7c59; margin: 0 0 10px 0;">🧠 脳の活性化</h5>
+                <p style="margin: 0;">集中力と観察力を鍛え、認知機能の維持・向上に効果的です。</p>
+            </div>
+            
+            <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #4a7c59;">
+                <h5 style="color: #4a7c59; margin: 0 0 10px 0;">😌 リラックス効果</h5>
+                <p style="margin: 0;">適度な集中により、日常のストレスから解放される時間を作れます。</p>
+            </div>
+            
+            <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #4a7c59;">
+                <h5 style="color: #4a7c59; margin: 0 0 10px 0;">🎉 達成感</h5>
+                <p style="margin: 0;">間違いを見つけた時の達成感が、心の充実感につながります。</p>
+            </div>
+        </div>
+    </div>
+
+    <h3>📱 LINEで仏教の智慧も受け取ろう</h3>
+    <div style="background: #00B900; color: white; padding: 25px; border-radius: 15px; text-align: center; margin: 30px 0;">
+        <h4 style="color: white; margin: 0 0 15px 0;">🌸 毎週月・水・金の朝8時</h4>
+        <p style="margin: 0 0 20px 0;">YouTubeの間違い探しに加えて、心を軽やかにする仏教の智慧もLINEでお届けしています。</p>
+        
+        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin: 20px 0;">
+            <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px; flex: 1; max-width: 200px;">
+                <div style="font-size: 24px; margin-bottom: 5px;">📅</div>
+                <div><strong>定期配信</strong><br>週3回お届け</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px; flex: 1; max-width: 200px;">
+                <div style="font-size: 24px; margin-bottom: 5px;">💡</div>
+                <div><strong>実践的</strong><br>すぐ役立つ智慧</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px; flex: 1; max-width: 200px;">
+                <div style="font-size: 24px; margin-bottom: 5px;">📖</div>
+                <div><strong>詳細記事</strong><br>ブログで深く学習</div>
+            </div>
+        </div>
+        
+        <a href="#" onclick="alert('LINEの友達追加用QRコードをここに表示予定')" 
+           style="display: inline-block; padding: 15px 30px; background: white; color: #00B900; 
+                  text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 16px;">
+            📱 LINE友達追加
+        </a>
+    </div>
+
+    <h3>📚 関連コンテンツ</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+        <a href="/blog" style="display: block; background: white; padding: 25px; border-radius: 10px; 
+                              text-decoration: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+                              border-left: 4px solid #d4af37; transition: transform 0.2s;">
+            <h5 style="color: #8b4513; margin: 0 0 10px 0;">📖 25の仏教の教え</h5>
+            <p style="color: #666; margin: 0 0 15px 0;">中道、一期一会、無常など、人生を豊かにする智慧を詳しく解説</p>
+            <div style="color: #d4af37; font-weight: bold;">→ 無料で読む</div>
+        </a>
+        
+        <a href="/products" style="display: block; background: white; padding: 25px; border-radius: 10px; 
+                                   text-decoration: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+                                   border-left: 4px solid #4a7c59; transition: transform 0.2s;">
+            <h5 style="color: #8b4513; margin: 0 0 10px 0;">🛍️ 学習教材</h5>
+            <p style="color: #666; margin: 0 0 15px 0;">電子書籍、音声コンテンツ、オンライン講座で深く学ぶ</p>
+            <div style="color: #4a7c59; font-weight: bold;">→ 商品を見る</div>
+        </a>
+        
+        <a href="/newsletter" style="display: block; background: white; padding: 25px; border-radius: 10px; 
+                                     text-decoration: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+                                     border-left: 4px solid #8b4513; transition: transform 0.2s;">
+            <h5 style="color: #8b4513; margin: 0 0 10px 0;">💌 メルマガ</h5>
+            <p style="color: #666; margin: 0 0 15px 0;">週2回、厳選された仏教の智慧と限定コンテンツをお届け</p>
+            <div style="color: #8b4513; font-weight: bold;">→ 無料登録</div>
+        </a>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px; padding: 30px; background: #f9f9f9; border-radius: 15px;">
+        <h4 style="color: #8b4513; margin: 0 0 15px 0;">🙏 私たちの想い</h4>
+        <p style="color: #666; line-height: 1.8; max-width: 600px; margin: 0 auto;">
+            YouTubeの間違い探しで楽しい時間を過ごしながら、仏教の智慧で心も豊かになっていただきたい。
+            そんな想いで、皆様に価値のあるコンテンツをお届けしています。
+            共に学び、共に成長していきましょう。
+        </p>
+    </div>
+</div>
+
+<style>
+.videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.video-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.video-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.video-embed {
+    position: relative;
+    width: 100%;
+    height: 200px;
+}
+
+.video-embed iframe {
+    border-radius: 10px 10px 0 0;
+}
+
+.video-info {
+    padding: 20px;
+}
+
+.video-info h4 {
+    color: #8b4513;
+    margin: 0 0 10px 0;
+    font-size: 1.2em;
+}
+
+.video-info p {
+    color: #666;
+    margin: 0;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .videos-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .video-embed {
+        height: 180px;
+    }
+}
+</style>
+{% endblock %}

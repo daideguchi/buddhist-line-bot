@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}商品一覧 | 人生の道標 - 癒される仏教{% endblock %}
+
+{% block content %}
+<div class="teaching-title">
+    <h2>🛍️ 仏教の智慧商品</h2>
+    <div class="pronunciation">心を豊かにする学びのツール</div>
+</div>
+
+<div class="content">
+    <h3>💎 厳選された仏教学習教材</h3>
+    <p>日常生活で実践できる仏教の智慧を、様々な形でお届けします。初心者の方から深く学びたい方まで、レベルに応じた教材をご用意しています。</p>
+    
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <div class="product-image">
+                <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #f4e4bc, #e8d5a3); 
+                           display: flex; align-items: center; justify-content: center; border-radius: 8px; margin-bottom: 15px;">
+                    <span style="font-size: 48px;">
+                        {% if product.type == '電子書籍（PDF）' %}📖
+                        {% elif product.type == '音声コンテンツ（MP3）' %}🎧
+                        {% else %}🎥{% endif %}
+                    </span>
+                </div>
+            </div>
+            
+            <h4>{{ product.name }}</h4>
+            <p class="product-type">{{ product.type }}</p>
+            <p class="product-description">{{ product.description }}</p>
+            
+            <div class="product-price">{{ product.price }}</div>
+            
+            <div class="product-actions">
+                <a href="/products/{{ product.id }}" class="btn-primary">詳細を見る</a>
+                <a href="#" class="btn-secondary" onclick="alert('現在準備中です。近日公開予定！')">購入する</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="practice-box" style="margin-top: 40px;">
+        <h4>🎁 特別オファー</h4>
+        <p><strong>メルマガ登録者限定</strong>で、全商品を<span style="color: #d32f2f; font-weight: bold;">20%割引</span>でご提供！</p>
+        <div style="text-align: center; margin-top: 15px;">
+            <a href="/newsletter" style="display: inline-block; padding: 12px 24px; background: #d4af37; 
+                                         color: white; text-decoration: none; border-radius: 25px; font-weight: bold;">
+                📧 メルマガ登録で20%OFF
+            </a>
+        </div>
+    </div>
+
+    <h3>✨ お客様から選ばれる理由</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; border-left: 4px solid #4a7c59;">
+            <h5 style="color: #4a7c59; margin: 0 0 10px 0;">🎯 実践的な内容</h5>
+            <p style="margin: 0;">机上の空論ではなく、日常生活ですぐに活かせる実践的な仏教の智慧をお届けします。</p>
+        </div>
+        
+        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; border-left: 4px solid #4a7c59;">
+            <h5 style="color: #4a7c59; margin: 0 0 10px 0;">👥 初心者にも分かりやすい</h5>
+            <p style="margin: 0;">仏教初心者の方でも理解しやすいよう、専門用語を避け、現代語で分かりやすく解説しています。</p>
+        </div>
+        
+        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; border-left: 4px solid #4a7c59;">
+            <h5 style="color: #4a7c59; margin: 0 0 10px 0;">🔄 継続サポート</h5>
+            <p style="margin: 0;">購入後もメールでフォローアップし、学習を継続できるようサポートいたします。</p>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="/testimonials" style="display: inline-block; padding: 12px 24px; background: #8b4513; 
+                                        color: white; text-decoration: none; border-radius: 25px; font-weight: bold;">
+            💬 お客様の声を見る
+        </a>
+        <a href="/youtube" style="display: inline-block; padding: 12px 24px; background: #d32f2f; 
+                                   color: white; text-decoration: none; border-radius: 25px; font-weight: bold; margin-left: 15px;">
+            🎥 YouTube動画を見る
+        </a>
+    </div>
+</div>
+
+<style>
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.product-card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+    border: 2px solid #f0f0f0;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.product-card h4 {
+    color: #8b4513;
+    font-size: 1.3em;
+    margin: 0 0 8px 0;
+}
+
+.product-type {
+    color: #d4af37;
+    font-weight: bold;
+    font-size: 0.9em;
+    margin: 0 0 15px 0;
+}
+
+.product-description {
+    color: #666;
+    line-height: 1.6;
+    margin: 0 0 20px 0;
+}
+
+.product-price {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #d32f2f;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.product-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-primary, .btn-secondary {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: #4a7c59;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #3a6147;
+}
+
+.btn-secondary {
+    background: #d4af37;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #b8941f;
+}
+</style>
+{% endblock %}

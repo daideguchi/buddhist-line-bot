@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}メルマガ登録 | 人生の道標 - 癒される仏教{% endblock %}
+
+{% block content %}
+<div class="teaching-title">
+    <h2>💌 仏教の智慧メルマガ</h2>
+    <div class="pronunciation">心を軽やかにする智慧を毎週お届け</div>
+</div>
+
+<div class="content">
+    <h3>✨ メルマガで得られること</h3>
+    <ul>
+        <li>📚 <strong>週2回</strong>、厳選された仏教の智慧をお届け</li>
+        <li>🎯 <strong>実践的な内容</strong>で、すぐに日常に活かせる</li>
+        <li>💡 <strong>限定コンテンツ</strong>や先行情報を配信</li>
+        <li>🎁 <strong>登録特典</strong>：「心が軽くなる7つの習慣」PDF無料プレゼント</li>
+    </ul>
+
+    <div class="practice-box">
+        <h4>📝 メルマガ登録フォーム</h4>
+        <form id="newsletterForm" style="max-width: 500px;">
+            <div style="margin-bottom: 20px;">
+                <label for="name" style="display: block; margin-bottom: 5px; font-weight: bold;">お名前（任意）</label>
+                <input type="text" id="name" name="name" placeholder="例：田中太郎" 
+                       style="width: 100%; padding: 10px; border: 2px solid #d4af37; border-radius: 5px; font-size: 16px;">
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label for="email" style="display: block; margin-bottom: 5px; font-weight: bold;">メールアドレス *</label>
+                <input type="email" id="email" name="email" required placeholder="例：example@gmail.com"
+                       style="width: 100%; padding: 10px; border: 2px solid #d4af37; border-radius: 5px; font-size: 16px;">
+            </div>
+            
+            <button type="submit" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #d4af37, #f4e4bc); 
+                                         border: none; border-radius: 25px; font-size: 18px; font-weight: bold; 
+                                         color: #8b4513; cursor: pointer; transition: transform 0.2s;">
+                📧 無料でメルマガを受け取る
+            </button>
+        </form>
+        
+        <div id="message" style="margin-top: 20px; text-align: center; font-weight: bold;"></div>
+    </div>
+
+    <h3>📬 メルマガサンプル</h3>
+    <div class="quote">
+        【人生の道標 Vol.1】中道の智慧
+
+        おはようございます。
+
+        今日は仏教の「中道」という教えについてお話しします。
+
+        頑張りすぎて疲れてしまった時、
+        「もう少し力を抜いても大丈夫」と自分に優しくしてあげましょう。
+
+        逆に、やる気が出ない時は、
+        「少しだけでも前進しよう」と自分を励ましてあげる。
+
+        このバランス感覚こそが、長く続く幸せの秘訣です。
+
+        今日も心穏やかに過ごしましょう。
+
+        【今日の実践】
+        完璧を求めず、80%でも良しとする心構えを持ってみてください。
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="/blog" style="display: inline-block; padding: 12px 24px; background: #4a7c59; color: white; 
+                                text-decoration: none; border-radius: 25px; font-weight: bold;">
+            📚 25の仏教の教えを読む
+        </a>
+    </div>
+
+    <p style="font-size: 0.9em; color: #666; margin-top: 30px;">
+        ※メルマガはいつでも配信停止できます。<br>
+        ※お客様の個人情報は厳重に管理し、第三者に提供することはありません。
+    </p>
+</div>
+
+<script>
+document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const button = this.querySelector('button[type="submit"]');
+    const message = document.getElementById('message');
+    
+    button.textContent = '登録中...';
+    button.disabled = true;
+    
+    fetch('/newsletter', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            message.innerHTML = `<div style="color: #4a7c59; background: #f0f8f0; padding: 15px; border-radius: 5px;">${data.message}</div>`;
+            this.reset();
+        } else {
+            message.innerHTML = `<div style="color: #d32f2f; background: #ffebee; padding: 15px; border-radius: 5px;">${data.message}</div>`;
+        }
+    })
+    .catch(error => {
+        message.innerHTML = `<div style="color: #d32f2f; background: #ffebee; padding: 15px; border-radius: 5px;">エラーが発生しました。もう一度お試しください。</div>`;
+    })
+    .finally(() => {
+        button.textContent = '📧 無料でメルマガを受け取る';
+        button.disabled = false;
+    });
+});
+</script>
+{% endblock %}
