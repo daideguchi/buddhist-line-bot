@@ -4,7 +4,7 @@ import logging
 import requests
 from datetime import datetime, timezone, timedelta
 import google.generativeai as genai
-from flask import Flask, request, abort, render_template
+from flask import Flask, request, abort, render_template, redirect, url_for
 from linebot.v3.messaging import (
     Configuration, ApiClient, MessagingApi, 
     PushMessageRequest, BroadcastRequest, TextMessage
@@ -105,6 +105,11 @@ def get_message_from_sheets():
         return None
 
 @app.route("/", methods=['GET'])
+def home():
+    """ホームページ - ブログ一覧にリダイレクト"""
+    return redirect(url_for('blog_index'))
+
+@app.route("/health", methods=['GET'])
 def health_check():
     """ヘルスチェック用エンドポイント"""
     return "Buddhist Wisdom Bot is running! [SIMPLIFIED VERSION]", 200
