@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}仏教の教え一覧 | 人生の道標 - 癒される仏教{% endblock %}
+
+{% block content %}
+<div class="teaching-title">
+    <h2>仏教の智慧</h2>
+    <div class="pronunciation">15の教えで心を軽やかに</div>
+</div>
+
+<div class="content">
+    <h3>📚 教えの一覧</h3>
+    <p>日常に活かせる仏教の智慧を、分かりやすく解説しています。気になる教えをクリックして、詳しい内容をご覧ください。</p>
+    
+    <div class="teachings-grid">
+        {% for teaching in teachings %}
+        <div class="teaching-card">
+            <h4><a href="{{ teaching.url }}">{{ teaching.name }}</a></h4>
+            <p class="pronunciation">{{ teaching.pronunciation }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.teachings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.teaching-card {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #d4af37;
+    transition: transform 0.2s;
+}
+
+.teaching-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.teaching-card h4 {
+    margin: 0 0 10px 0;
+    color: #8b4513;
+}
+
+.teaching-card h4 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.teaching-card h4 a:hover {
+    color: #d4af37;
+}
+
+.teaching-card .pronunciation {
+    color: #666;
+    font-size: 0.9em;
+    margin: 0;
+}
+</style>
+{% endblock %}

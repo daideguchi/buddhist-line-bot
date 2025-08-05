@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{{ teaching.name }} | 人生の道標 - 癒される仏教{% endblock %}
+
+{% block content %}
+<div class="teaching-title">
+    <h2>{{ teaching.name }}</h2>
+    <div class="pronunciation">{{ teaching.pronunciation }}</div>
+</div>
+
+<div class="content">
+    <h3>📖 教えの意味</h3>
+    <p>{{ teaching.meaning }}</p>
+    
+    <div class="quote">
+        "{{ teaching.quote }}"
+    </div>
+    
+    <h3>🌸 日常での活かし方</h3>
+    <p>{{ teaching.application }}</p>
+    
+    <div class="practice-box">
+        <h4>💡 今日から実践できること</h4>
+        <ul>
+            {% for practice in teaching.practices %}
+            <li>{{ practice }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <h3>🧘 心に留めておきたいこと</h3>
+    <p>{{ teaching.reflection }}</p>
+    
+    {% if teaching.story %}
+    <h3>📚 関連する仏教の話</h3>
+    <p>{{ teaching.story }}</p>
+    {% endif %}
+    
+    <h3>🌅 今日の実践</h3>
+    <p>{{ teaching.daily_practice }}</p>
+</div>
+{% endblock %}
