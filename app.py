@@ -7,7 +7,7 @@ import google.generativeai as genai
 from flask import Flask, request, abort
 from linebot.v3.messaging import (
     Configuration, ApiClient, MessagingApi, 
-    PushMessageRequest, TextMessage
+    PushMessageRequest, BroadcastRequest, TextMessage
 )
 
 app = Flask(__name__)
@@ -115,10 +115,6 @@ def broadcast():
     try:
         # リクエストボディから設定を取得
         data = request.get_json() or {}
-        user_ids = data.get('user_ids', [])  # 配信対象のユーザーID一覧
-        
-        if not user_ids:
-            return {"status": "error", "message": "No user_ids provided"}, 400
         
         # カスタムメッセージがない場合はスプレッドシートまたはAI生成
         if not data.get('message'):
@@ -185,27 +181,19 @@ def broadcast():
         else:
             message_text = data.get('message')
         
-        # 各ユーザーに配信
-        successful_sends = 0
+        # 全ユーザーに配信
         with ApiClient(configuration) as api_client:
             line_bot_api = MessagingApi(api_client)
-            
-            for user_id in user_ids:
-                try:
-                    line_bot_api.push_message(
-                        PushMessageRequest(
-                            to=user_id,
-                            messages=[TextMessage(text=message_text)]
-                        )
-                    )
-                    successful_sends += 1
-                    logger.info(f"Message sent to {user_id}")
-                except Exception as e:
-                    logger.error(f"Failed to send to {user_id}: {e}")
+            line_bot_api.broadcast(
+                BroadcastRequest(
+                    messages=[TextMessage(text=message_text)]
+                )
+            )
         
+        logger.info(f"Buddhist wisdom broadcast sent: {message_text}")
         return {
             "status": "success", 
-            "message": f"Broadcast sent to {successful_sends}/{len(user_ids)} users",
+            "message": "Buddhist wisdom broadcast sent",
             "content": message_text
         }, 200
         
