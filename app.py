@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 LINE_CHANNEL_ACCESS_TOKEN = os.environ.get('LINE_CHANNEL_ACCESS_TOKEN')
 GOOGLE_SHEETS_API_KEY = os.environ.get('GOOGLE_SHEETS_API_KEY', 'AIzaSyAaMEjKg4TBxPvUnq53KQ4GxhQi4dcXlQU')
-SPREADSHEET_ID = os.environ.get('SPREADSHEET_ID', '1-J7Xz_dUHAE-ML9uWhHfXenIVY2ISCf8gksXYV3BQ6g')
+SPREADSHEET_ID = os.environ.get('SPREADSHEET_ID', '14NtDP14UOo8TXNHktT-2U8XkPqnW7ruuixdGVCdj6LA')
 
 # LINE Bot設定（配信専用）
 configuration = Configuration(access_token=LINE_CHANNEL_ACCESS_TOKEN)
